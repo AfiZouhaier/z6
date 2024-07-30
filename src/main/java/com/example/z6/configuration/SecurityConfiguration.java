@@ -46,7 +46,7 @@ public class SecurityConfiguration {
                 .cors().and()  // Add CORS configuration
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("**").permitAll()
+                .requestMatchers(WHITE_LIST_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -61,7 +61,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*"); // Adjust to your client origin
+        configuration.addAllowedOrigin("http://localhost:4200"); // Adjust to your client origin
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
