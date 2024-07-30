@@ -13,7 +13,6 @@ import java.io.FileOutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
