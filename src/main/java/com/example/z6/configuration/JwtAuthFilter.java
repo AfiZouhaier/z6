@@ -31,6 +31,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String jwToken;
         final String userEmail;
         if (authHeader==null || !authHeader.startsWith("Bearer ")){
+            System.out.println("*************************z6");
             filterChain.doFilter(request, response);
             return;
         }
