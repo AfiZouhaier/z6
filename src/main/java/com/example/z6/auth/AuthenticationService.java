@@ -87,6 +87,7 @@ public class AuthenticationService {
                 .bankAccounts(bankAccounts)
                 .role(user.getRole())
                 .transactionList(transactionList)
+                .id(user.getId())
                 .build();
     }
 }
