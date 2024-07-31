@@ -28,6 +28,7 @@ public class TransactionController {
 
     @PostMapping("/create")
     public ResponseEntity createTransaction(@RequestBody Transaction transaction){
+        System.out.println(transaction);
         return transactionService.createTransaction(transaction);
     }
 
