@@ -15,8 +15,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -41,6 +43,7 @@ public class SecurityConfiguration {
             "/webjars/**",
             "/swagger-ui.html"
     };
+    private  List<String> CROSS_ORIGIN_LIST= new ArrayList<String>();
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -62,8 +65,10 @@ public class SecurityConfiguration {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+        CROSS_ORIGIN_LIST.add("http://localhost:4200");
+        CROSS_ORIGIN_LIST.add("http://192.168.1.22:8081");
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("*")); // Adjust to your client origin
+        configuration.setAllowedOrigins(CROSS_ORIGIN_LIST); // Adjust to your client origin
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
