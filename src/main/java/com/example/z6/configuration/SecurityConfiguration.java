@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +45,7 @@ public class SecurityConfiguration {
             "/webjars/**",
             "/swagger-ui.html"
     };
-    private  List<String> CROSS_ORIGIN_LIST= new ArrayList<String>();
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -64,18 +66,26 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CROSS_ORIGIN_LIST.add("http://localhost:4200");
-        CROSS_ORIGIN_LIST.add("http://192.168.1.22:8081");
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(CROSS_ORIGIN_LIST); // Adjust to your client origin
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true);
+    public WebMvcConfigurer corsConfigurer() {
+        String[] CROSS_ORIGIN_LIST=  {
+                "http://192.168.1.22:8081",
+                "http://localhost:4200"
+        };
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/ws/**")
+                        .allowedOrigins(CROSS_ORIGIN_LIST) // Adjust with your frontend domain
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-
-        return source;
+                registry.addMapping("/**") // Apply to other endpoints
+                        .allowedOrigins(CROSS_ORIGIN_LIST) // Adjust with your frontend domain
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 }
